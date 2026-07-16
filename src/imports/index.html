@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Phan Khanh Dang</title>
+
+        <!-- Link your CSS file here -->
+        <link rel="stylesheet" href="styles.css" />
+    </head>
+
+    <body>
+        <button class="theme-toggle" id="themeToggle"
+            aria-label="Toggle light/dark mode">
+            <span id="themeIcon">🌚</span>
+        </button>
+        <div class="page-wrapper">
+
+            <!-- ── PROFILE SECTION ── -->
+            <section id="profile">
+                <img
+                    src="https://github.com/dang-gerous.png"
+                    alt="My photo" />
+                <h1>Phan Khanh Dang</h1>
+                <p>Veni, Vidi, Vici.</p>
+
+                <!-- ── SOCIAL LINKS ── -->
+                <div class="links">
+                    <a href="https://github.com/dang-gerous" target="_blank"
+                        rel="noopener noreferrer">
+                        <span class="icon">🐙</span>
+                        <span class="label">GitHub</span>
+                        <span class="arrow">→</span>
+                    </a>
+                    <a href="https://www.facebook.com/phan.khanh.ang.101587/"
+                        target="_blank" rel="noopener noreferrer">
+                        <span class="icon">🫆</span>
+                        <span class="label">Facebook</span>
+                        <span class="arrow">→</span>
+                    </a>
+                    <a
+                        href="https://www.linkedin.com/in/phan-khanh-dang-54a7703a5/"
+                        target="_blank" rel="noopener noreferrer">
+                        <span class="icon">💼</span>
+                        <span class="label">LinkedIn</span>
+                        <span class="arrow">→</span>
+                    </a>
+                    <!-- Copy and paste an <a> block above to add more links -->
+                </div>
+            </section>
+
+            <!-- ── PING PONG SECTION ── -->
+            <section id="game">
+                <h2 class="section-title">Play Pong</h2>
+                <canvas id="pongCanvas" width="640" height="640"></canvas>
+                <div class="game-buttons">
+                    <button class="btn" id="startBtn">▶ Start Game</button>
+                    <button class="btn btn-outline hidden" id="restartBtn">↺
+                        Restart</button>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p>Made by <a href="#">Phan Khanh Dang</a></p>
+        </footer>
+
+        <!-- Load your game script at the end so the canvas exists first -->
+        <script src="pong.js"></script>
+        <script>
+        const toggleBtn = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+
+        // Remember preference on load
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.classList.add('light-mode');
+            themeIcon.textContent = '🌞';
+        }
+
+        toggleBtn.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+
+            if (document.body.classList.contains('light-mode')) {
+                themeIcon.textContent = '🌞';
+                localStorage.setItem('theme', 'light');   // Save choice
+            } else {
+                themeIcon.textContent = '🌚';
+                localStorage.setItem('theme', 'dark');    // Save choice
+            }
+        });
+    </script>
+    </body>
+
+</html>

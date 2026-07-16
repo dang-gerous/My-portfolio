@@ -1,0 +1,414 @@
+/* ============================================================
+   PERSONAL WEBSITE — style.css
+   Edit the values in each section to customise your site.
+   Every customisable value has a comment explaining what it does.
+   ============================================================ */
+
+
+/* ── 1. DESIGN TOKENS ──────────────────────────────────────────
+   Change these variables and the whole site updates at once.
+   ─────────────────────────────────────────────────────────── */
+:root {
+  /* --- Colours --- */
+  --bg-page: #0f0f13;
+  /* Page background (dark by default) */
+  --bg-card: #1a1a22;
+  /* Cards / sections background */
+  --bg-card-hover: #ffffff;
+  /* Card background on hover */
+
+  --accent: #e63946;
+  /* Main accent colour (buttons, links, highlights) */
+  --accent-hover: #9d98ff;
+  /* Accent colour when hovered */
+  --accent-glow: rgba(124, 111, 247, 0.25);
+  /* Glow / shadow from accent */
+
+  --text-primary: #f0eeff;
+  /* Main text colour */
+  --text-secondary: #9390aa;
+  /* Subtitles, labels, muted text */
+  --border: rgba(255, 255, 255, 0.08);
+  /* Subtle borders */
+
+  /* --- Typography --- */
+  --font-main: 'Segoe UI', system-ui, sans-serif;
+  /* Body & UI font */
+  --font-display: 'DM Sans', Tahoma, serif;
+  /* Name / heading font */
+  --font-mono: 'Courier New', monospace;
+  /* Code / game score font */
+
+  /* --- Sizes --- */
+  --avatar-size: 150px;
+  /* Profile picture diameter */
+  --radius-card: 24px;
+  /* Corner rounding for cards */
+  --radius-btn: 8px;
+  /* Corner rounding for buttons */
+  --max-width: 720px;
+  /* Maximum width of the page content */
+
+  /* --- Spacing --- */
+  --gap-section: 64px;
+  /* Vertical space between page sections */
+  --gap-card: 16px;
+  /* Space between social link cards */
+  --padding-card: 20px 24px;
+  /* Inner padding of each card */
+
+  /* --- Transitions --- */
+  --transition: 0.22s ease;
+  /* Duration of hover animations */
+}
+
+
+/* ── 2. RESET & BASE ────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Smooth scroll when clicking anchor links */
+}
+
+body {
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  font-family: var(--font-main);
+  font-size: 16px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+
+/* ── 3. PAGE LAYOUT ─────────────────────────────────────────── */
+.page-wrapper {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 48px 24px var(--gap-section);
+}
+
+section {
+  margin-bottom: var(--gap-section);
+}
+
+
+/* ── 4. PROFILE / HERO SECTION ──────────────────────────────── */
+#profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+}
+
+/* Profile photo */
+#profile img {
+  width: var(--avatar-size);
+  height: var(--avatar-size);
+  border-radius: 50%;
+  /* Round shape — change to 12px for square */
+  object-fit: cover;
+  border: 3px solid var(--accent);
+  box-shadow: 0 0 24px var(--accent-glow);
+}
+
+/* Your name */
+#profile h1 {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  /* Change size of your name here */
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--text-primary);
+}
+
+/* Tagline / short bio */
+#profile p {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  max-width: 420px;
+}
+
+
+/* ── 5. SOCIAL LINKS ────────────────────────────────────────── */
+.links {
+  display: flex;
+  flex-direction: column;
+  /* Stack vertically — change to 'row' + flex-wrap for grid */
+  gap: var(--gap-card);
+  width: 100%;
+  max-width: 460px;
+  /* Limit width of the links column */
+}
+
+/* Each social link card */
+.links a {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: var(--padding-card);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 500;
+  transition:
+    background var(--transition),
+    border-color var(--transition),
+    transform var(--transition),
+    box-shadow var(--transition);
+}
+
+/* Hover state for social cards */
+.links a:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--accent);
+  transform: translateX(4px);
+  /* Slide slightly right — remove if you don't like it */
+  box-shadow: 0 4px 20px var(--accent-glow);
+}
+
+/* Icon inside each social card (optional <img> or emoji) */
+.links a .icon {
+  font-size: 1.4rem;
+  /* Emoji/icon size */
+  flex-shrink: 0;
+  /* Prevent icon from being squished */
+}
+
+/* Platform label (e.g. "GitHub") */
+.links a .label {
+  flex: 1;
+}
+
+/* Small arrow at the end of each card */
+.links a .arrow {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  transition: transform var(--transition);
+}
+
+.links a:hover .arrow {
+  transform: translateX(4px);
+  color: var(--accent);
+}
+
+
+/* ── 6. SECTION HEADING ─────────────────────────────────────── */
+.section-title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+/* Decorative underline accent under headings */
+.section-title::after {
+  content: '';
+  display: block;
+  width: 40px;
+  /* Width of the accent line */
+  height: 3px;
+  background: var(--accent);
+  border-radius: 2px;
+  margin: 8px auto 0;
+}
+
+
+/* ── 7. PING PONG GAME SECTION ──────────────────────────────── */
+#game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+/* The <canvas> element that holds the game */
+/* Remove the square border from the canvas */
+#pongCanvas {
+  background: transparent;
+  border: none;
+  /* ← removes the red square outline */
+  border-radius: 0;
+  box-shadow: none;
+  display: block;
+  max-width: 100%;
+}
+
+/* Button row below the game */
+.game-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+/* Hidden utility class */
+.hidden {
+  display: none;
+}
+
+/* Controls hint below the game */
+#game .controls-hint {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  text-align: center;
+}
+
+/* Score display (if you render it in HTML rather than on canvas) */
+.game-score {
+  font-family: var(--font-mono);
+  font-size: 1.4rem;
+  letter-spacing: 4px;
+  color: var(--accent);
+}
+
+
+/* ── 8. BUTTONS ─────────────────────────────────────────────── */
+/* General-purpose button — add class="btn" to any <button> */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-btn);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background var(--transition),
+    box-shadow var(--transition),
+    transform var(--transition);
+}
+
+.btn:hover {
+  background: var(--accent-hover);
+  box-shadow: 0 4px 16px var(--accent-glow);
+  transform: translateY(-1px);
+}
+
+/* Ghost / outline variant — add class="btn btn-outline" */
+.btn-outline {
+  background: transparent;
+  border: 1.5px solid var(--accent);
+  color: var(--accent);
+}
+
+.btn-outline:hover {
+  background: var(--accent);
+  color: #fff;
+}
+
+
+/* ── 9. FOOTER ──────────────────────────────────────────────── */
+footer {
+  text-align: center;
+  padding: 32px 24px;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  border-top: 1px solid var(--border);
+  margin-top: var(--gap-section);
+}
+
+footer a {
+  color: var(--accent);
+}
+
+footer a:hover {
+  color: var(--accent-hover);
+}
+
+
+/* ── 10. RESPONSIVE — MOBILE ADJUSTMENTS ────────────────────── */
+@media (max-width: 600px) {
+  #profile h1 {
+    font-size: 1.7rem;
+  }
+
+  #pongCanvas {
+    width: 100%;
+    height: auto;
+  }
+
+  .links {
+    max-width: 100%;
+  }
+}
+
+/* ── 11. LIGHT MODE (for entire website) ────────────────────────────────── */
+body.light-mode {
+  --bg-page: #f5f4ff;
+  --bg-card: #ffffff;
+  --bg-card-hover: #eeecff;
+  --text-primary: #1a1830;
+  --text-secondary: #6b6882;
+  --border: rgba(0, 0, 0, 0.08);
+  --accent-glow: rgba(124, 111, 247, 0.15);
+}
+
+/* ── THEME TOGGLE BUTTON ── */
+.theme-toggle {
+  position: fixed;
+  /* Stays in corner while you scroll */
+  top: 20px;
+  right: 20px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  /* Round button — change to 8px for square */
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background var(--transition), transform var(--transition);
+  z-index: 999;
+}
+
+.theme-toggle:hover {
+  background: var(--bg-card-hover);
+  transform: scale(1.1);
+  /* Grows slightly on hover — remove if you don't like it */
+}
+
+
+/* Start button hidden while game is running */
+#startBtn.hidden {
+  display: none;
+}
+
+/* Pong Canvas on Mobile*/
+#pongCanvas {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  display: block;
+  max-width: 100%;
+  height: auto;       /* ← add this so height scales with width */
+  touch-action: none; /* ← prevents the page scrolling when touching the canvas */
+}
