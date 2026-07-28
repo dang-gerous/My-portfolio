@@ -25,7 +25,7 @@ const contacts = [
   { label: 'GitHub', href: 'https://github.com/dang-gerous', icon: Github, handle: '@dang-gerous' },
   { label: 'LinkedIn', href: 'https://www.linkedin.com/in/phan-khanh-dang-54a7703a5/', icon: Linkedin, handle: 'Phan Khanh Dang' },
   { label: 'Facebook', href: 'https://www.facebook.com/phan.khanh.ang.101587/', icon: Facebook, handle: 'Phan Khánh Đăng' },
-  { label: 'Email', href: 'phankhanhdang2007@gmail.com', icon: Mail, handle: 'phankhanhdang2007@...' },
+  { label: 'Email', href: 'phankhanhdang07@gmail.com', icon: Mail, handle: 'phankhanhdang07@...' },
 ];
 
 /* ── Atoms ─────────────────────────────────────────────────── */

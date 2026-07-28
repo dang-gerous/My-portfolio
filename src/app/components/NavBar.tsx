@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
-import { Search, X, Mail, Coffee } from 'lucide-react';
+import { Search, X, Mail, Coffee, Menu } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import { useIsMobile } from '../hooks/useIsMobile';
 
 const ALL_ITEMS = [
   { label: 'About Me', id: 'hero' },
@@ -23,10 +24,19 @@ const ALL_ITEMS = [
   { label: 'Hobby: Gym', id: 'hero' },
 ];
 
+const NAV_LINKS = [
+  { label: 'About', id: 'hero' },
+  { label: 'Timeline', id: 'timeline' },
+  { label: 'Work', id: 'work' },
+  { label: 'Game', id: 'game' },
+];
+
 export function NavBar() {
   const { theme } = useTheme();
+  const isMobile = useIsMobile();
   const [query, setQuery] = useState('');
   const [open, setOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const wrapRef = useRef<HTMLDivElement>(null);
 
   const results = query.trim().length > 0
@@ -37,6 +47,7 @@ export function NavBar() {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
     setQuery('');
     setOpen(false);
+    setMenuOpen(false);
   };
 
   useEffect(() => {
@@ -47,25 +58,136 @@ export function NavBar() {
     return () => document.removeEventListener('mousedown', h);
   }, []);
 
+  // Close mobile menu on resize to desktop
+  useEffect(() => {
+    if (!isMobile) setMenuOpen(false);
+  }, [isMobile]);
+
+  const navBase: React.CSSProperties = {
+    position: 'sticky', top: 0, zIndex: 100,
+    backgroundColor: theme.bg,
+    borderBottom: `2px solid ${theme.border}`,
+    transition: 'background-color 0.35s, border-color 0.35s',
+  };
+
+  /* ── Mobile layout ─────────────────────────────────────────── */
+  if (isMobile) {
+    return (
+      <nav style={navBase}>
+        {/* Top bar */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: 56, padding: '0 20px' }}>
+          <button onClick={() => scrollTo('hero')} style={{
+            fontFamily: "'Space Grotesk', sans-serif",
+            fontWeight: 800, fontSize: '1.1rem', letterSpacing: '-0.5px',
+            color: theme.text, background: 'none', border: 'none',
+            cursor: 'pointer', padding: 0,
+          }}>
+            PKD<span style={{ color: theme.accent }}>.</span>
+          </button>
+          <button
+            onClick={() => setMenuOpen(m => !m)}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', color: theme.text, padding: 6, display: 'flex', alignItems: 'center' }}
+          >
+            {menuOpen ? <X size={22} /> : <Menu size={22} />}
+          </button>
+        </div>
+
+        {/* Slide-down menu */}
+        {menuOpen && (
+          <div style={{
+            borderTop: `2px solid ${theme.border}`,
+            padding: '16px 20px 20px',
+            display: 'flex', flexDirection: 'column', gap: '14px',
+            backgroundColor: theme.bg,
+          }}>
+            {/* Search bar */}
+            <div ref={wrapRef} style={{ position: 'relative' }}>
+              <div style={{
+                display: 'flex', alignItems: 'center', gap: 8,
+                padding: '9px 14px',
+                background: theme.isDark ? 'rgba(249,248,243,0.06)' : '#fff',
+                border: `2px solid ${open ? theme.accent : theme.border}`,
+                boxShadow: open ? `2px 2px 0 ${theme.accent}` : `2px 2px 0 ${theme.border}`,
+                borderRadius: 10, transition: 'border-color 0.15s, box-shadow 0.15s',
+              }}>
+                <Search size={14} color={theme.muted} style={{ flexShrink: 0 }} />
+                <input
+                  type="text" placeholder="Search anything..." value={query}
+                  onChange={e => { setQuery(e.target.value); setOpen(true); }}
+                  onFocus={() => setOpen(true)}
+                  style={{
+                    border: 'none', outline: 'none', background: 'transparent',
+                    fontSize: '0.85rem', fontFamily: "'Space Grotesk', sans-serif",
+                    fontWeight: 500, color: theme.text, width: '100%', caretColor: theme.accent,
+                  }}
+                />
+                {query && (
+                  <button onClick={() => setQuery('')} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, display: 'flex', color: theme.muted }}>
+                    <X size={13} />
+                  </button>
+                )}
+              </div>
+              {open && results.length > 0 && (
+                <div style={{
+                  position: 'absolute', top: 'calc(100% + 6px)', left: 0, right: 0,
+                  background: theme.card, border: `2px solid ${theme.border}`,
+                  boxShadow: `4px 4px 0 ${theme.accent}`,
+                  borderRadius: 10, overflow: 'hidden', zIndex: 999,
+                }}>
+                  {results.map((item, i) => (
+                    <button key={i} onClick={() => scrollTo(item.id)}
+                      style={{
+                        width: '100%', padding: '11px 14px', background: 'transparent', border: 'none',
+                        borderBottom: i < results.length - 1 ? `1px solid ${theme.isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'}` : 'none',
+                        textAlign: 'left', cursor: 'pointer', fontSize: '0.82rem',
+                        fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, color: theme.text,
+                        display: 'flex', alignItems: 'center', gap: 8,
+                      }}
+                      onMouseEnter={e => { e.currentTarget.style.background = theme.isDark ? 'rgba(255,255,255,0.05)' : '#F9F8F3'; }}
+                      onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
+                    >
+                      <span style={{ fontSize: '0.58rem', background: theme.accent, color: '#fff', padding: '1px 5px', borderRadius: 3, fontWeight: 700, flexShrink: 0 }}>
+                        {item.id.toUpperCase()}
+                      </span>
+                      {item.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Nav links */}
+            <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+              {NAV_LINKS.map(({ label, id }) => (
+                <NavBtn key={id} label={label} onClick={() => scrollTo(id)} theme={theme} />
+              ))}
+            </div>
+
+            {/* Divider */}
+            <div style={{ height: 1, background: theme.border, opacity: 0.3 }} />
+
+            {/* Action buttons */}
+            <div style={{ display: 'flex', gap: 8 }}>
+              <DonateBtn theme={theme} />
+              <ContactBtn onClick={() => scrollTo('hero')} theme={theme} />
+            </div>
+          </div>
+        )}
+      </nav>
+    );
+  }
+
+  /* ── Desktop layout ────────────────────────────────────────── */
   return (
-    /*
-     * CSS grid with `1fr auto 1fr` guarantees the center column (search)
-     * is always mathematically centered in the nav, regardless of how
-     * wide the left content grows.
-     */
     <nav style={{
-      position: 'sticky', top: 0, zIndex: 100,
-      backgroundColor: theme.bg,
-      borderBottom: `2px solid ${theme.border}`,
+      ...navBase,
       padding: '0 28px',
       display: 'grid',
       gridTemplateColumns: '1fr auto 1fr',
       alignItems: 'center',
       height: '56px',
-      transition: 'background-color 0.35s, border-color 0.35s',
     }}>
-
-      {/* ── Left cell: PKD. | nav links ── */}
+      {/* Left: PKD. + nav links */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
         <button onClick={() => scrollTo('hero')} style={{
           fontFamily: "'Space Grotesk', sans-serif",
@@ -76,23 +198,20 @@ export function NavBar() {
         }}>
           PKD<span style={{ color: theme.accent }}>.</span>
         </button>
-
         <div style={{ width: 1, height: 22, background: theme.border, opacity: 0.25, margin: '0 4px', flexShrink: 0 }} />
-
-        {[{ label: 'About', id: 'hero' }, { label: 'Timeline', id: 'timeline' }, { label: 'Work', id: 'work' }, { label: 'Game', id: 'game' }].map(({ label, id }) => (
+        {NAV_LINKS.map(({ label, id }) => (
           <NavBtn key={id} label={label} onClick={() => scrollTo(id)} theme={theme} />
         ))}
       </div>
 
-      {/* ── Center cell: search bar — perfectly centered by grid ── */}
+      {/* Center: search */}
       <div ref={wrapRef} style={{ position: 'relative' }}>
         <div style={{
-          display: 'flex', alignItems: 'center', gap: '8px',
-          padding: '7px 14px',
+          display: 'flex', alignItems: 'center', gap: 8, padding: '7px 14px',
           background: theme.isDark ? 'rgba(249,248,243,0.06)' : '#fff',
           border: `2px solid ${open ? theme.accent : theme.border}`,
           boxShadow: open ? `2px 2px 0 ${theme.accent}` : `2px 2px 0 ${theme.border}`,
-          borderRadius: '10px', width: '300px',
+          borderRadius: 10, width: 300,
           transition: 'border-color 0.15s, box-shadow 0.15s',
         }}>
           <Search size={14} color={theme.muted} style={{ flexShrink: 0 }} />
@@ -103,8 +222,7 @@ export function NavBar() {
             style={{
               border: 'none', outline: 'none', background: 'transparent',
               fontSize: '0.82rem', fontFamily: "'Space Grotesk', sans-serif",
-              fontWeight: 500, color: theme.text, width: '100%',
-              caretColor: theme.accent,
+              fontWeight: 500, color: theme.text, width: '100%', caretColor: theme.accent,
             }}
           />
           {query && (
@@ -113,28 +231,26 @@ export function NavBar() {
             </button>
           )}
         </div>
-
         {open && results.length > 0 && (
           <div style={{
-            position: 'absolute', top: 'calc(100% + 6px)', left: '50%', transform: 'translateX(-50%)', width: '320px',
+            position: 'absolute', top: 'calc(100% + 6px)', left: '50%', transform: 'translateX(-50%)', width: 320,
             background: theme.card, border: `2px solid ${theme.border}`,
             boxShadow: `4px 4px 0 ${theme.accent}`,
-            borderRadius: '10px', overflow: 'hidden', zIndex: 999,
+            borderRadius: 10, overflow: 'hidden', zIndex: 999,
           }}>
             {results.map((item, i) => (
               <button key={i} onClick={() => scrollTo(item.id)}
                 style={{
                   width: '100%', padding: '10px 14px', background: 'transparent', border: 'none',
                   borderBottom: i < results.length - 1 ? `1px solid ${theme.isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'}` : 'none',
-                  textAlign: 'left', cursor: 'pointer',
-                  fontSize: '0.8rem', fontFamily: "'Space Grotesk', sans-serif",
-                  fontWeight: 600, color: theme.text,
-                  display: 'flex', alignItems: 'center', gap: '8px',
+                  textAlign: 'left', cursor: 'pointer', fontSize: '0.8rem',
+                  fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, color: theme.text,
+                  display: 'flex', alignItems: 'center', gap: 8,
                 }}
                 onMouseEnter={e => { e.currentTarget.style.background = theme.isDark ? 'rgba(255,255,255,0.05)' : '#F9F8F3'; }}
                 onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
               >
-                <span style={{ fontSize: '0.58rem', background: theme.accent, color: '#fff', padding: '1px 5px', borderRadius: '3px', fontWeight: 700, flexShrink: 0 }}>
+                <span style={{ fontSize: '0.58rem', background: theme.accent, color: '#fff', padding: '1px 5px', borderRadius: 3, fontWeight: 700, flexShrink: 0 }}>
                   {item.id.toUpperCase()}
                 </span>
                 {item.label}
@@ -144,8 +260,8 @@ export function NavBar() {
         )}
       </div>
 
-      {/* ── Right cell: Donate + Contact, far right ── */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', justifyContent: 'flex-end' }}>
+      {/* Right: Donate + Contact */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6, justifyContent: 'flex-end' }}>
         <DonateBtn theme={theme} />
         <ContactBtn onClick={() => scrollTo('hero')} theme={theme} />
       </div>
@@ -164,7 +280,7 @@ function NavBtn({ label, onClick, theme }: { label: string; onClick: () => void;
         padding: '5px 10px',
         background: hov ? theme.text : 'transparent',
         border: `2px solid ${hov ? theme.text : 'transparent'}`,
-        borderRadius: '6px', color: hov ? theme.bg : theme.text,
+        borderRadius: 6, color: hov ? theme.bg : theme.text,
         cursor: 'pointer', transition: 'all 0.15s ease', whiteSpace: 'nowrap',
       }}>
       {label}
@@ -184,8 +300,8 @@ function ContactBtn({ onClick, theme }: { onClick: () => void; theme: ReturnType
         background: theme.accent, color: '#fff',
         border: `2px solid ${theme.text}`,
         boxShadow: hov ? `3px 3px 0 ${theme.text}` : `2px 2px 0 ${theme.text}`,
-        borderRadius: '6px', cursor: 'pointer',
-        display: 'flex', alignItems: 'center', gap: '5px',
+        borderRadius: 6, cursor: 'pointer',
+        display: 'flex', alignItems: 'center', gap: 5,
         transform: hov ? 'translate(-1px,-1px)' : 'none',
         transition: 'all 0.15s ease', whiteSpace: 'nowrap', flexShrink: 0,
       }}>
@@ -208,8 +324,8 @@ function DonateBtn({ theme }: { theme: ReturnType<typeof useTheme>['theme'] }) {
         color: '#13101C',
         border: `2px solid ${theme.text}`,
         boxShadow: hov ? `3px 3px 0 ${theme.text}` : `2px 2px 0 ${theme.text}`,
-        borderRadius: '6px', cursor: 'pointer',
-        display: 'flex', alignItems: 'center', gap: '5px',
+        borderRadius: 6, cursor: 'pointer',
+        display: 'flex', alignItems: 'center', gap: 5,
         transform: hov ? 'translate(-1px,-1px)' : 'none',
         transition: 'all 0.15s ease', whiteSpace: 'nowrap', flexShrink: 0,
       }}>

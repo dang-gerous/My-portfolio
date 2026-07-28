@@ -6,6 +6,7 @@ import { WorkSection } from './components/WorkSection';
 import { PongSection } from './components/PongSection';
 import { Footer } from './components/Footer';
 import { PullCord } from './components/PullCord';
+import { useIsMobile } from './hooks/useIsMobile';
 
 function Divider() {
   const { theme } = useTheme();
@@ -21,6 +22,8 @@ function Divider() {
 
 function AppInner() {
   const { theme } = useTheme();
+  const isMobile = useIsMobile();
+
   return (
     <div style={{
       fontFamily: "'Space Grotesk', sans-serif",
@@ -32,7 +35,12 @@ function AppInner() {
       <NavBar />
       <PullCord />
 
-      <main style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 40px' }}>
+      <main style={{
+        maxWidth: '1200px',
+        margin: '0 auto',
+        padding: isMobile ? '0 16px' : '0 40px',
+        boxSizing: 'border-box',
+      }}>
         <HeroSection />
         <Divider />
         <TimelineSection />

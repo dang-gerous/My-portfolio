@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useTheme } from '../context/ThemeContext';
+import { useIsMobile } from '../hooks/useIsMobile';
 
 const ACCENT = '#C62828';
 
@@ -35,23 +36,37 @@ function SkateboardSVG({ isDark }: { isDark: boolean }) {
 
 export function TimelineSection() {
   const { theme } = useTheme();
+  const isMobile = useIsMobile();
   const [hovered, setHovered] = useState<number | null>(null);
+  const sectionRef = useRef<HTMLElement>(null);
   const n = milestones.length;
   const pct = (i: number) => (i / (n - 1)) * 100;
 
+  // Close popup when tapping outside on mobile
+  useEffect(() => {
+    if (!isMobile) return;
+    const handler = (e: TouchEvent) => {
+      if (sectionRef.current && !sectionRef.current.contains(e.target as Node)) {
+        setHovered(null);
+      }
+    };
+    document.addEventListener('touchstart', handler);
+    return () => document.removeEventListener('touchstart', handler);
+  }, [isMobile]);
+
   return (
-    <section id="timeline" style={{ padding: '64px 0' }}>
+    <section id="timeline" ref={sectionRef} style={{ padding: isMobile ? '40px 0' : '64px 0' }}>
       <div style={{ marginBottom: '56px' }}>
         <p style={{ fontSize: '0.72rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.15em', color: ACCENT, marginBottom: '8px' }}>
           My Journey
         </p>
-        <h2 style={{ fontSize: '2.2rem', fontWeight: 800, letterSpacing: '-1px', color: theme.text, lineHeight: 1.1, transition: 'color 0.35s' }}>
+        <h2 style={{ fontSize: isMobile ? '1.7rem' : '2.2rem', fontWeight: 800, letterSpacing: '-1px', color: theme.text, lineHeight: 1.1, transition: 'color 0.35s' }}>
           A Life on the
           <span style={{ color: ACCENT, borderBottom: `3px solid ${ACCENT}`, paddingBottom: 2, marginLeft: 10 }}>Board</span>
         </h2>
       </div>
 
-      <div style={{ position: 'relative', padding: '0 0 88px', userSelect: 'none' }}>
+      <div style={{ position: 'relative', padding: '0 0 100px', userSelect: 'none' }}>
         {/* Rail */}
         <div style={{ position: 'relative', height: 4, background: theme.border, borderRadius: 2 }}>
           <motion.div
@@ -74,15 +89,35 @@ export function TimelineSection() {
         {milestones.map((m, i) => (
           <div key={`${m.year}-${i}`} style={{ position: 'absolute', left: `${pct(i)}%`, top: 0, transform: 'translateX(-50%)' }}>
             <motion.button
+              /* Desktop hover */
               onHoverStart={() => setHovered(i)}
               onHoverEnd={() => setHovered(null)}
-              animate={{ scale: hovered === i ? 1.45 : 1, backgroundColor: hovered === i ? ACCENT : theme.text }}
+              /* Mobile touch — tap toggles popup */
+              onTouchStart={(e) => {
+                e.preventDefault();
+                setHovered(h => h === i ? null : i);
+              }}
+              animate={{
+                scale: hovered === i ? 1.45 : 1,
+                backgroundColor: hovered === i ? ACCENT : theme.text,
+              }}
               transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-              style={{ width: 18, height: 18, borderRadius: '50%', border: `3px solid ${theme.text}`, display: 'block', cursor: 'pointer', outline: 'none', marginTop: -7, position: 'relative', zIndex: 10, background: theme.text, boxShadow: hovered === i ? '0 0 0 4px rgba(198,40,40,0.25)' : 'none' }}
+              style={{
+                width: isMobile ? 24 : 18,
+                height: isMobile ? 24 : 18,
+                borderRadius: '50%',
+                border: `3px solid ${theme.text}`,
+                display: 'block', cursor: 'pointer', outline: 'none',
+                marginTop: isMobile ? -10 : -7,
+                position: 'relative', zIndex: 10,
+                background: theme.text,
+                boxShadow: hovered === i ? '0 0 0 4px rgba(198,40,40,0.25)' : 'none',
+                touchAction: 'manipulation',
+              }}
             />
 
-            <div style={{ marginTop: 14, textAlign: 'center', transform: 'translateX(-50%)', marginLeft: 9, width: 58 }}>
-              <span style={{ fontSize: '0.72rem', fontWeight: 700, fontFamily: "'JetBrains Mono', monospace", color: hovered === i ? ACCENT : theme.muted, transition: 'color 0.2s', display: 'block' }}>
+            <div style={{ marginTop: 14, textAlign: 'center', transform: 'translateX(-50%)', marginLeft: isMobile ? 12 : 9, width: isMobile ? 38 : 58 }}>
+              <span style={{ fontSize: isMobile ? '0.6rem' : '0.72rem', fontWeight: 700, fontFamily: "'JetBrains Mono', monospace", color: hovered === i ? ACCENT : theme.muted, transition: 'color 0.2s', display: 'block' }}>
                 {m.year}
               </span>
             </div>
@@ -94,7 +129,17 @@ export function TimelineSection() {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 8, scale: 0.94 }}
                   transition={{ duration: 0.2, ease: 'easeOut' }}
-                  style={{ position: 'absolute', top: 66, left: '50%', transform: 'translateX(-50%)', width: 200, background: theme.card, border: `2px solid ${theme.border}`, boxShadow: `4px 4px 0 ${ACCENT}`, borderRadius: 12, padding: 16, zIndex: 20, pointerEvents: 'none' }}
+                  style={{
+                    position: 'absolute', top: isMobile ? 72 : 66,
+                    /* Keep popup in viewport on mobile — flip for first/last dots */
+                    left: i === 0 ? '0%' : i === n - 1 ? 'auto' : '50%',
+                    right: i === n - 1 ? '0%' : undefined,
+                    transform: i === 0 || i === n - 1 ? 'none' : 'translateX(-50%)',
+                    width: isMobile ? 180 : 200,
+                    background: theme.card, border: `2px solid ${theme.border}`,
+                    boxShadow: `4px 4px 0 ${ACCENT}`,
+                    borderRadius: 12, padding: 16, zIndex: 20, pointerEvents: 'none',
+                  }}
                 >
                   <div style={{ fontSize: '1.5rem', marginBottom: 8 }}>{m.icon}</div>
                   <div style={{ fontSize: '0.6rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: ACCENT, marginBottom: 4 }}>{m.year}</div>
@@ -108,7 +153,7 @@ export function TimelineSection() {
       </div>
 
       <p style={{ fontSize: '0.78rem', color: theme.muted, textAlign: 'center', marginTop: 16, fontStyle: 'italic', transition: 'color 0.35s' }}>
-        Hover the dots to skate through time
+        {isMobile ? 'Tap the dots to skate through time' : 'Hover the dots to skate through time'}
       </p>
     </section>
   );

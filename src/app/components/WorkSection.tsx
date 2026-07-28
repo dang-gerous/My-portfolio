@@ -71,7 +71,7 @@ export function WorkSection() {
               fontSize: '0.88rem', color: theme.muted, lineHeight: 1.6,
               maxWidth: '480px', transition: 'color 0.3s',
             }}>
-              A collaborative platfrom where students find their perfect study partners and crush academic goals.
+              A collaborative sanctuary where ambitious students find their perfect study partners and crush academic goals.
             </p>
           </div>
 
@@ -94,7 +94,7 @@ export function WorkSection() {
               In Progress
             </div>
             <a
-              href="https://github.com/CrossNO2/Studymate"
+              href="https://github.com/dang-gerous"
               target="_blank"
               rel="noopener noreferrer"
               style={{
