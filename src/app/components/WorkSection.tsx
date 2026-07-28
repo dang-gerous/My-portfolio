@@ -71,7 +71,7 @@ export function WorkSection() {
               fontSize: '0.88rem', color: theme.muted, lineHeight: 1.6,
               maxWidth: '480px', transition: 'color 0.3s',
             }}>
-              A collaborative sanctuary where ambitious students find their perfect study partners and crush academic goals.
+              A collaborative sanctuary where students find their perfect study partners and crush academic goals.
             </p>
           </div>
 
@@ -94,7 +94,7 @@ export function WorkSection() {
               In Progress
             </div>
             <a
-              href="https://github.com/dang-gerous"
+              href="https://github.com/CrossNO2/Studymate"
               target="_blank"
               rel="noopener noreferrer"
               style={{
@@ -251,7 +251,7 @@ export function WorkSection() {
           lineHeight: 1.6,
           transition: 'color 0.3s',
         }}>
-          This space grows as I do. New projects drop regularly — check back soon.
+          This space grows as I do. New projects drop regularly — come back soon.
         </p>
       </div>
 
