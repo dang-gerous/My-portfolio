@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/react';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
 import { NavBar } from './components/NavBar';
 import { HeroSection } from './components/HeroSection';
@@ -59,6 +60,7 @@ export default function App() {
   return (
     <ThemeProvider>
       <AppInner />
+      <Analytics />
     </ThemeProvider>
   );
 }
