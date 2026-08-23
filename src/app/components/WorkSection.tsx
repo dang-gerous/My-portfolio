@@ -60,7 +60,7 @@ export function WorkSection() {
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
               <img
-                src="../../imports/logostudymate.png"
+                src="/logostudymate.png"
                 alt="StudyMate logo"
                 style={{ width: 36, height: 36, objectFit: 'contain', borderRadius: 6, flexShrink: 0 }}
               />

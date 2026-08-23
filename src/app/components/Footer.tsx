@@ -32,7 +32,7 @@ export function Footer() {
             PKD<span style={{ color: ACCENT }}>.</span>
           </div>
           <p style={{ fontSize: '0.85rem', color: textMuted, maxWidth: '260px', lineHeight: 1.6 }}>
-            CS student, builder, and occasional skater/dancer/baller from Vietnam.
+            CS student, builder, and occasional dancer/baller from Vietnam.
           </p>
         </div>
 
@@ -84,7 +84,7 @@ export function Footer() {
       }}>
         <span>© 2026 Phan Khanh Dang. All rights reserved.</span>
         <span style={{ fontFamily: "'JetBrains Mono', monospace" }}>
-          Made with <span style={{ color: ACCENT }}>♥</span> & ☕
+          Made with <span style={{ color: ACCENT }}>❤️</span> & ☕️
         </span>
       </div>
     </footer>
