@@ -343,7 +343,7 @@ function DonateBtn({ theme }: { theme: ReturnType<typeof useTheme>['theme'] }) {
             <img
               src={QR_URL}
               alt="Donation QR Code"
-              style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+              style={{ width: '160%', height: '160%', objectFit: 'contain' }}
             />
           </div>
           <p style={{
@@ -362,7 +362,7 @@ function DonateBtn({ theme }: { theme: ReturnType<typeof useTheme>['theme'] }) {
             fontFamily: "'JetBrains Mono', monospace",
             fontSize: '0.62rem', color: theme.muted, textAlign: 'center', margin: 0,
           }}>
-            Scan to donate ☕
+            Scan to donate.
           </p>
         </div>
       )}
