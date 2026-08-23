@@ -8,18 +8,6 @@ Google Drive files cannot be fetched directly — stubs will be used for favicon
 
 ---
 
-## ⚠️ Google Drive Assets — Action Required from User
-
-| Feature          | Drive Link                                 | File to drop into `src/imports/`  |
-| ---------------- | ------------------------------------------ | --------------------------------- |
-| Favicon          | `1pors27F1PHFhl7SRKyf8nYgg9-LvFCjf`        | `favicon.png`                     |
-| QR Code (Donate) | `1AANkUw9tMop--lJISNnIN4_VdpzMKqCs`        | `qr-code.png`                     |
-| Music file       | `1ZQqB1UlbWR4Mpk_MB7dGcGaJMLzTlpcu`        | `music.mp3` (or `.ogg`)           |
-| Moments photos   | folder `19gG0-Fg-kzP4UAotKNx2C-VzFpuJ5VTN` | `moment-1.jpg`, `moment-2.jpg`, … |
-
-Stubs are implemented now; swapping the real files requires only changing the import path/src value.
-
----
 
 ## Files Modified
 
@@ -106,8 +94,7 @@ Uses HTML5 `<audio>` element (not YouTube IFrame) for seamless control.
 
 ```tsx
 const src =
-  "https://drive.google.com/uc?export=download&id=1ZQqB1UlbWR4Mpk_MB7dGcGaJMLzTlpcu";
-// OR: import musicSrc from '../../imports/music.mp3'; (after user uploads file)
+
 const audioRef = useRef<HTMLAudioElement>(null);
 const toggle = () =>
   isPlaying
