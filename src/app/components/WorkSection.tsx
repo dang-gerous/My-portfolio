@@ -59,7 +59,11 @@ export function WorkSection() {
           {/* Left: info */}
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-              <span style={{ fontSize: '1.8rem' }}>📖</span>
+              <img
+                src="https://drive.google.com/uc?export=view&id=1pors27F1PHFhl7SRKyf8nYgg9-LvFCjf"
+                alt="StudyMate logo"
+                style={{ width: 36, height: 36, objectFit: 'contain', borderRadius: 6, flexShrink: 0 }}
+              />
               <h3 style={{
                 fontSize: '1.35rem', fontWeight: 800, letterSpacing: '-0.5px',
                 color: theme.text, transition: 'color 0.3s',
@@ -71,7 +75,7 @@ export function WorkSection() {
               fontSize: '0.88rem', color: theme.muted, lineHeight: 1.6,
               maxWidth: '480px', transition: 'color 0.3s',
             }}>
-              A collaborative sanctuary where students find their perfect study partners and crush academic goals.
+              A collaborative sanctuary where ambitious students find their perfect study partners and crush academic goals.
             </p>
           </div>
 
@@ -94,7 +98,7 @@ export function WorkSection() {
               In Progress
             </div>
             <a
-              href="https://github.com/CrossNO2/Studymate"
+              href="https://github.com/dang-gerous"
               target="_blank"
               rel="noopener noreferrer"
               style={{
@@ -161,17 +165,37 @@ export function WorkSection() {
             justifyContent: 'space-between',
             alignItems: 'center',
             marginBottom: '10px',
+            flexWrap: 'wrap',
+            gap: '8px',
           }}>
-            <span style={{ fontSize: '0.75rem', fontWeight: 700, color: theme.muted, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-              Development Progress
-            </span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <span style={{ fontSize: '0.75rem', fontWeight: 700, color: theme.muted, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                Development Progress
+              </span>
+              {/* Beta badge */}
+              <span style={{
+                display: 'inline-flex', alignItems: 'center', gap: '4px',
+                padding: '2px 9px',
+                background: 'rgba(235,207,28,0.15)',
+                border: '1.5px solid #EBCF1C',
+                borderRadius: '20px',
+                fontSize: '0.62rem', fontWeight: 800,
+                color: '#b8a000',
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                animation: 'betaPulse 2s ease-in-out infinite',
+              }}>
+                <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#EBCF1C', display: 'inline-block', animation: 'betaDot 2s ease-in-out infinite' }} />
+                Beta
+              </span>
+            </div>
             <span style={{
               fontFamily: "'JetBrains Mono', monospace",
               fontSize: '0.85rem',
               fontWeight: 700,
-              color: ACCENT,
+              color: '#b8a000',
             }}>
-              45%
+              72%
             </span>
           </div>
 
@@ -187,11 +211,11 @@ export function WorkSection() {
             {/* Fill */}
             <motion.div
               initial={{ width: 0 }}
-              animate={{ width: inView ? '45%' : 0 }}
+              animate={{ width: inView ? '72%' : 0 }}
               transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
               style={{
                 height: '100%',
-                background: `linear-gradient(90deg, ${ACCENT}, #ef5350)`,
+                background: 'linear-gradient(90deg, #EBCF1C, #f5e14a)',
                 borderRadius: '4px',
                 position: 'relative',
                 overflow: 'hidden',
@@ -222,8 +246,40 @@ export function WorkSection() {
             fontWeight: 600,
           }}>
             {['Concept', 'MVP', 'Beta', 'Launch'].map((m, i) => (
-              <span key={m} style={{ color: i === 1 ? ACCENT : undefined }}>{m}</span>
+              <span key={m} style={{ color: i === 2 ? '#EBCF1C' : undefined, fontWeight: i === 2 ? 800 : undefined }}>{m}</span>
             ))}
+          </div>
+
+          {/* Embedded video */}
+          <div style={{ marginTop: '18px' }}>
+            <p style={{
+              fontSize: '0.68rem', fontWeight: 700, textTransform: 'uppercase',
+              letterSpacing: '0.1em', color: theme.muted, marginBottom: '8px',
+            }}>
+              StudyMate Introduction Video
+            </p>
+            <div style={{
+              position: 'relative',
+              width: '100%',
+              paddingTop: '56.25%', // 16:9 ratio
+              borderRadius: '10px',
+              overflow: 'hidden',
+              border: `2px solid ${theme.border}`,
+              boxShadow: `3px 3px 0 ${theme.border}`,
+            }}>
+              <iframe
+                src="https://www.youtube.com/embed/47_aPGzQ9Hg"
+                title="StudyMate Introduction Video"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                style={{
+                  position: 'absolute',
+                  top: 0, left: 0,
+                  width: '100%', height: '100%',
+                  border: 'none',
+                }}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -251,12 +307,14 @@ export function WorkSection() {
           lineHeight: 1.6,
           transition: 'color 0.3s',
         }}>
-          This space grows as I do. New projects drop regularly — come back soon.
+          This space grows as I do. New projects drop regularly — check back soon.
         </p>
       </div>
 
       <style>{`
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes betaPulse { 0%,100%{opacity:1} 50%{opacity:0.65} }
+        @keyframes betaDot { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(0.6);opacity:0.5} }
       `}</style>
     </section>
   );

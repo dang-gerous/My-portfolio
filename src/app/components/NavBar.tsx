@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Search, X, Mail, Coffee, Menu } from 'lucide-react';
+import { Search, X, Coffee, Menu } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useIsMobile } from '../hooks/useIsMobile';
 
@@ -31,6 +31,8 @@ const NAV_LINKS = [
   { label: 'Game', id: 'game' },
 ];
 
+const QR_URL = 'https://drive.google.com/uc?export=view&id=1AANkUw9tMop--lJISNnIN4_VdpzMKqCs';
+
 export function NavBar() {
   const { theme } = useTheme();
   const isMobile = useIsMobile();
@@ -58,7 +60,6 @@ export function NavBar() {
     return () => document.removeEventListener('mousedown', h);
   }, []);
 
-  // Close mobile menu on resize to desktop
   useEffect(() => {
     if (!isMobile) setMenuOpen(false);
   }, [isMobile]);
@@ -169,7 +170,6 @@ export function NavBar() {
             {/* Action buttons */}
             <div style={{ display: 'flex', gap: 8 }}>
               <DonateBtn theme={theme} />
-              <ContactBtn onClick={() => scrollTo('hero')} theme={theme} />
             </div>
           </div>
         )}
@@ -260,10 +260,9 @@ export function NavBar() {
         )}
       </div>
 
-      {/* Right: Donate + Contact */}
+      {/* Right: Donate only */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 6, justifyContent: 'flex-end' }}>
         <DonateBtn theme={theme} />
-        <ContactBtn onClick={() => scrollTo('hero')} theme={theme} />
       </div>
     </nav>
   );
@@ -288,48 +287,93 @@ function NavBtn({ label, onClick, theme }: { label: string; onClick: () => void;
   );
 }
 
-function ContactBtn({ onClick, theme }: { onClick: () => void; theme: ReturnType<typeof useTheme>['theme'] }) {
-  const [hov, setHov] = useState(false);
-  return (
-    <button onClick={onClick}
-      onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
-      style={{
-        fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700,
-        fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.07em',
-        padding: '5px 13px',
-        background: theme.accent, color: '#fff',
-        border: `2px solid ${theme.text}`,
-        boxShadow: hov ? `3px 3px 0 ${theme.text}` : `2px 2px 0 ${theme.text}`,
-        borderRadius: 6, cursor: 'pointer',
-        display: 'flex', alignItems: 'center', gap: 5,
-        transform: hov ? 'translate(-1px,-1px)' : 'none',
-        transition: 'all 0.15s ease', whiteSpace: 'nowrap', flexShrink: 0,
-      }}>
-      <Mail size={12} /> Contact
-    </button>
-  );
-}
-
 function DonateBtn({ theme }: { theme: ReturnType<typeof useTheme>['theme'] }) {
   const [hov, setHov] = useState(false);
+  const [popoverOpen, setPopoverOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setPopoverOpen(false);
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
   return (
-    <button
-      onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
-      onClick={() => window.open('https://www.buymeacoffee.com/', '_blank')}
-      style={{
-        fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700,
-        fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.07em',
-        padding: '5px 13px',
-        background: hov ? '#D97706' : '#F59E0B',
-        color: '#13101C',
-        border: `2px solid ${theme.text}`,
-        boxShadow: hov ? `3px 3px 0 ${theme.text}` : `2px 2px 0 ${theme.text}`,
-        borderRadius: 6, cursor: 'pointer',
-        display: 'flex', alignItems: 'center', gap: 5,
-        transform: hov ? 'translate(-1px,-1px)' : 'none',
-        transition: 'all 0.15s ease', whiteSpace: 'nowrap', flexShrink: 0,
-      }}>
-      <Coffee size={12} /> Donate
-    </button>
+    <div ref={ref} style={{ position: 'relative' }}>
+      <button
+        onMouseEnter={() => setHov(true)}
+        onMouseLeave={() => setHov(false)}
+        onClick={() => setPopoverOpen(p => !p)}
+        style={{
+          fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700,
+          fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.07em',
+          padding: '5px 13px',
+          background: popoverOpen ? '#D97706' : (hov ? '#D97706' : '#F59E0B'),
+          color: '#13101C',
+          border: `2px solid ${theme.text}`,
+          boxShadow: (hov || popoverOpen) ? `3px 3px 0 ${theme.text}` : `2px 2px 0 ${theme.text}`,
+          borderRadius: 6, cursor: 'pointer',
+          display: 'flex', alignItems: 'center', gap: 5,
+          transform: (hov || popoverOpen) ? 'translate(-1px,-1px)' : 'none',
+          transition: 'all 0.15s ease', whiteSpace: 'nowrap', flexShrink: 0,
+        }}>
+        <Coffee size={12} /> Donate
+      </button>
+
+      {popoverOpen && (
+        <div style={{
+          position: 'absolute', top: 'calc(100% + 10px)', right: 0,
+          background: theme.card,
+          border: `2px solid ${theme.border}`,
+          boxShadow: `6px 6px 0 #F59E0B`,
+          borderRadius: 16, padding: '20px',
+          zIndex: 999, minWidth: 220,
+          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12,
+          animation: 'fadeSlideIn 0.18s ease',
+        }}>
+          <div style={{
+            width: 160, height: 160,
+            border: `2px solid ${theme.border}`,
+            borderRadius: 10, overflow: 'hidden',
+            background: '#fff',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}>
+            <img
+              src={QR_URL}
+              alt="Donation QR Code"
+              style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+              onError={e => { (e.target as HTMLImageElement).src = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://www.buymeacoffee.com/'; }}
+            />
+          </div>
+          <p style={{
+            fontFamily: "'Space Grotesk', sans-serif",
+            fontSize: '0.82rem', fontWeight: 600,
+            color: theme.text, textAlign: 'center', lineHeight: 1.5,
+            margin: 0,
+          }}>
+            Thanks for supporting Dang <span style={{ color: '#C62828' }}>&lt;3</span>
+          </p>
+          <div style={{
+            width: '100%', height: 1,
+            background: theme.border, opacity: 0.3,
+          }} />
+          <p style={{
+            fontFamily: "'JetBrains Mono', monospace",
+            fontSize: '0.62rem', color: theme.muted, textAlign: 'center', margin: 0,
+          }}>
+            Scan to donate ☕
+          </p>
+        </div>
+      )}
+
+      <style>{`
+        @keyframes fadeSlideIn {
+          from { opacity: 0; transform: translateY(-6px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
+    </div>
   );
 }

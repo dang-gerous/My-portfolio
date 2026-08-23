@@ -248,8 +248,10 @@ export function PongSection() {
 
       if (g.paddles.top.left) g.paddles.top.angle -= PADDLE_SPEED;
       if (g.paddles.top.right) g.paddles.top.angle += PADDLE_SPEED;
-      if (g.paddles.bottom.left) g.paddles.bottom.angle -= PADDLE_SPEED;
-      if (g.paddles.bottom.right) g.paddles.bottom.angle += PADDLE_SPEED;
+      // Player 2 is at the bottom: ← moves toward screen-left (angle increases toward π)
+      //                             → moves toward screen-right (angle decreases toward 0)
+      if (g.paddles.bottom.left) g.paddles.bottom.angle += PADDLE_SPEED;
+      if (g.paddles.bottom.right) g.paddles.bottom.angle -= PADDLE_SPEED;
 
       g.paddles.top.angle = normaliseAngle(g.paddles.top.angle);
       g.paddles.bottom.angle = normaliseAngle(g.paddles.bottom.angle);

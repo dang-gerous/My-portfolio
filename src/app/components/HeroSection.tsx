@@ -1,24 +1,28 @@
-import { useState, type ReactNode, type CSSProperties, type ElementType } from 'react';
-import { Github, Facebook, Linkedin, MapPin, GraduationCap, Code2, ExternalLink, Mail, User } from 'lucide-react';
+import { useState, useEffect, useRef, type ReactNode, type CSSProperties, type ElementType } from 'react';
+import { Github, Facebook, Linkedin, MapPin, GraduationCap, ExternalLink, Mail, User, Terminal } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import phanDinhPhungLogo from '../../imports/image.png';
 import universityLogo from '../../imports/image-1.png';
 
 const ACCENT = '#C62828';
 
-const skills = [
-  'JavaScript', 'Figma', 'Framer', 'HTML/CSS',
-  'C++', 'C', 'React', 'Git', 'GitHub',
-  'Vibe Code', 'Linux', 'TypeScript', 'Python', 'REST APIs',
+// ── Smart Stack gallery images (replace IDs with your actual Google Drive file IDs) ──
+// The folder: https://drive.google.com/drive/folders/19gG0-Fg-kzP4UAotKNx2C-VzFpuJ5VTN
+// Add your Drive file IDs below — each gives a direct image URL
+const GALLERY_IMAGES = [
+  { src: 'https://images.unsplash.com/photo-1625283518288-00362afc8663?w=600&q=80', caption: 'Good vibes only 🌟' },
+  { src: 'https://images.unsplash.com/photo-1781179752681-8b01a96702dc?w=600&q=80', caption: 'Hoops at midnight 🏀' },
+  { src: 'https://images.unsplash.com/photo-1511988617509-a57c8a288659?w=600&q=80', caption: 'Squad moments 🤝' },
+  { src: 'https://images.unsplash.com/photo-1582298538104-fe2e74c27f59?w=600&q=80', caption: 'Coffee & laughs ☕' },
+  { src: 'https://images.unsplash.com/photo-1536010305525-f7aa0834e2c7?w=600&q=80', caption: 'Exploring the city 🌆' },
 ];
 
-const hobbies = [
-  { icon: '🕺', label: 'Dancing' },
-  { icon: '🎵', label: 'Music' },
-  { icon: '🎨', label: 'Designing' },
-  { icon: '💻', label: 'Vibe Coding' },
-  { icon: '🏀', label: 'Basketball' },
-  { icon: '💪', label: 'Gym' },
+const SKILL_CATEGORIES = [
+  { prefix: 'frontend', color: '#22d3ee', skills: ['React', 'TypeScript', 'JavaScript', 'HTML/CSS'] },
+  { prefix: 'design  ', color: '#a78bfa', skills: ['Figma', 'Framer'] },
+  { prefix: 'backend ', color: '#34d399', skills: ['Python', 'Node.js', 'REST APIs'] },
+  { prefix: 'systems ', color: '#fb923c', skills: ['C', 'C++', 'Linux'] },
+  { prefix: 'tools   ', color: '#f472b6', skills: ['Git', 'GitHub', 'Vibe Code'] },
 ];
 
 const contacts = [
@@ -53,18 +57,6 @@ function Label({ children }: { children: ReactNode }) {
     }}>
       {children}
     </div>
-  );
-}
-
-function Chip({ text }: { text: string }) {
-  const { theme } = useTheme();
-  return (
-    <span style={{
-      padding: '2px 9px',
-      background: theme.isDark ? 'rgba(249,248,243,0.06)' : theme.bg,
-      border: `1.5px solid ${theme.border}`,
-      borderRadius: '6px', fontSize: '0.67rem', fontWeight: 600, color: theme.text,
-    }}>{text}</span>
   );
 }
 
@@ -108,6 +100,267 @@ function ContactLink({ href, icon: Icon, label, handle }: { href: string; icon: 
       </div>
       <ExternalLink size={11} style={{ opacity: 0.3, flexShrink: 0 }} />
     </a>
+  );
+}
+
+/* ── Terminal Tech Skills ────────────────────────────────────── */
+
+function TerminalSkills() {
+  const { theme } = useTheme();
+  const [lines, setLines] = useState<number>(0);
+  const [cursor, setCursor] = useState(true);
+
+  // Animate lines appearing one by one
+  useEffect(() => {
+    if (lines >= SKILL_CATEGORIES.length + 2) return;
+    const t = setTimeout(() => setLines(l => l + 1), lines === 0 ? 300 : 260);
+    return () => clearTimeout(t);
+  }, [lines]);
+
+  // Blinking cursor
+  useEffect(() => {
+    const id = setInterval(() => setCursor(c => !c), 530);
+    return () => clearInterval(id);
+  }, []);
+
+  const termBg = theme.isDark ? '#0d0b14' : '#1a1625';
+
+  return (
+    <div style={{
+      background: termBg,
+      border: `2px solid ${theme.isDark ? 'rgba(249,248,243,0.12)' : 'rgba(0,0,0,0.3)'}`,
+      boxShadow: 'none',
+      borderRadius: '12px',
+      overflow: 'hidden',
+      fontFamily: "'JetBrains Mono', monospace",
+    }}>
+      {/* Title bar */}
+      <div style={{
+        display: 'flex', alignItems: 'center', gap: 6,
+        padding: '8px 14px',
+        background: theme.isDark ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.08)',
+        borderBottom: '1px solid rgba(255,255,255,0.08)',
+      }}>
+        {['#ff5f57', '#ffbd2e', '#28c840'].map((c, i) => (
+          <span key={i} style={{ width: 10, height: 10, borderRadius: '50%', background: c, display: 'block' }} />
+        ))}
+        <span style={{ marginLeft: 8, fontSize: '0.65rem', color: 'rgba(255,255,255,0.4)', fontWeight: 500 }}>
+          dang@portfolio ~ skills
+        </span>
+      </div>
+
+      {/* Terminal body */}
+      <div style={{ padding: '14px 18px 16px', minHeight: 160 }}>
+        {/* Prompt line */}
+        {lines >= 1 && (
+          <div style={{ display: 'flex', gap: 8, marginBottom: 6, fontSize: '0.76rem' }}>
+            <span style={{ color: '#22d3ee', fontWeight: 700 }}>❯</span>
+            <span style={{ color: 'rgba(255,255,255,0.6)' }}>skills</span>
+            <span style={{ color: '#a78bfa' }}>--list</span>
+            <span style={{ color: '#34d399' }}>--verbose</span>
+          </div>
+        )}
+
+        {/* Skill category rows */}
+        {SKILL_CATEGORIES.slice(0, Math.max(0, lines - 1)).map((cat, i) => (
+          <div key={cat.prefix} style={{
+            display: 'flex', alignItems: 'flex-start', gap: 10,
+            marginBottom: 5, fontSize: '0.72rem',
+            animation: 'termLine 0.2s ease',
+          }}>
+            <span style={{ color: '#fb923c', minWidth: 8 }}>›</span>
+            <span style={{ color: 'rgba(255,255,255,0.35)', minWidth: 70 }}>{cat.prefix}</span>
+            <span style={{ color: 'rgba(255,255,255,0.2)', marginRight: 4 }}>:</span>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
+              {cat.skills.map(skill => (
+                <span key={skill} style={{
+                  color: cat.color,
+                  background: `${cat.color}18`,
+                  border: `1px solid ${cat.color}40`,
+                  borderRadius: 4, padding: '1px 7px',
+                  fontSize: '0.68rem', fontWeight: 600,
+                  cursor: 'default',
+                  transition: 'all 0.12s',
+                }}
+                  onMouseEnter={e => {
+                    const el = e.currentTarget;
+                    el.style.background = `${cat.color}35`;
+                    el.style.borderColor = cat.color;
+                    el.style.transform = 'translateY(-1px)';
+                  }}
+                  onMouseLeave={e => {
+                    const el = e.currentTarget;
+                    el.style.background = `${cat.color}18`;
+                    el.style.borderColor = `${cat.color}40`;
+                    el.style.transform = 'none';
+                  }}>
+                  {skill}
+                </span>
+              ))}
+            </div>
+          </div>
+        ))}
+
+        {/* Cursor line */}
+        {lines > 0 && (
+          <div style={{ display: 'flex', gap: 8, fontSize: '0.76rem', marginTop: 8 }}>
+            <span style={{ color: '#22d3ee', fontWeight: 700 }}>❯</span>
+            <span style={{
+              display: 'inline-block', width: 7, height: 14,
+              background: cursor ? 'rgba(255,255,255,0.7)' : 'transparent',
+              borderRadius: 1, verticalAlign: 'text-bottom',
+              transition: 'background 0.1s',
+            }} />
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* ── iOS Smart Stack Gallery ─────────────────────────────────── */
+
+function SmartStack() {
+  const { theme } = useTheme();
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [dragging, setDragging] = useState(false);
+  const [dragStartX, setDragStartX] = useState(0);
+  const [dragOffset, setDragOffset] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const total = GALLERY_IMAGES.length;
+
+  const goTo = (idx: number) => {
+    setActiveIndex(((idx % total) + total) % total);
+    setDragOffset(0);
+  };
+
+  const onPointerDown = (e: React.PointerEvent) => {
+    setDragging(true);
+    setDragStartX(e.clientX);
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+  };
+
+  const onPointerMove = (e: React.PointerEvent) => {
+    if (!dragging) return;
+    setDragOffset(e.clientX - dragStartX);
+  };
+
+  const onPointerUp = () => {
+    if (!dragging) return;
+    setDragging(false);
+    if (dragOffset < -50) goTo(activeIndex + 1);
+    else if (dragOffset > 50) goTo(activeIndex - 1);
+    else setDragOffset(0);
+  };
+
+  return (
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+      <Label>✨ Beyond Code</Label>
+
+      {/* Card stack */}
+      <div
+        ref={containerRef}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={onPointerUp}
+        style={{
+          position: 'relative',
+          flex: 1,
+          minHeight: 160,
+          cursor: dragging ? 'grabbing' : 'grab',
+          touchAction: 'none',
+          userSelect: 'none',
+        }}
+      >
+        {GALLERY_IMAGES.map((img, i) => {
+          const offset = ((i - activeIndex + total) % total);
+          const normOffset = offset > total / 2 ? offset - total : offset;
+
+          // Only render nearby cards
+          if (Math.abs(normOffset) > 2) return null;
+
+          const isActive = normOffset === 0;
+          const scale = isActive ? 1 : 1 - Math.abs(normOffset) * 0.06;
+          const translateY = isActive ? 0 : Math.abs(normOffset) * 6;
+          const translateX = isActive
+            ? (dragging ? dragOffset : 0)
+            : normOffset * 8;
+          const zIndex = 10 - Math.abs(normOffset);
+          const opacity = 1 - Math.abs(normOffset) * 0.25;
+          const rotate = normOffset * 1.5 + (isActive && dragging ? dragOffset * 0.03 : 0);
+
+          return (
+            <div
+              key={i}
+              style={{
+                position: 'absolute',
+                inset: 0,
+                borderRadius: 14,
+                overflow: 'hidden',
+                zIndex,
+                transform: `translateX(${translateX}px) translateY(${translateY}px) scale(${scale}) rotate(${rotate}deg)`,
+                transition: dragging && isActive ? 'none' : 'transform 0.38s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s ease',
+                opacity,
+                border: `2px solid ${theme.border}`,
+                boxShadow: isActive
+                  ? `0 8px 32px rgba(0,0,0,0.22)`
+                  : `0 4px 12px rgba(0,0,0,0.12)`,
+              }}
+            >
+              <img
+                src={img.src}
+                alt={img.caption}
+                draggable={false}
+                style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+              />
+              {isActive && (
+                <div style={{
+                  position: 'absolute', bottom: 0, left: 0, right: 0,
+                  padding: '20px 14px 12px',
+                  background: 'linear-gradient(to top, rgba(0,0,0,0.7), transparent)',
+                  color: '#fff',
+                  fontFamily: "'Space Grotesk', sans-serif",
+                  fontSize: '0.76rem', fontWeight: 600,
+                  letterSpacing: '0.01em',
+                }}>
+                  {img.caption}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Dot indicators + swipe hint */}
+      <div style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        gap: 6, marginTop: 10,
+      }}>
+        {GALLERY_IMAGES.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => goTo(i)}
+            style={{
+              width: activeIndex === i ? 18 : 6,
+              height: 6,
+              borderRadius: 3,
+              background: activeIndex === i ? ACCENT : theme.border,
+              border: 'none', cursor: 'pointer', padding: 0,
+              transition: 'all 0.25s ease',
+            }}
+          />
+        ))}
+      </div>
+      <p style={{
+        textAlign: 'center', fontSize: '0.58rem',
+        color: theme.muted, marginTop: 5, fontStyle: 'italic',
+        fontFamily: "'JetBrains Mono', monospace",
+      }}>
+        swipe or drag ←→
+      </p>
+    </div>
   );
 }
 
@@ -184,7 +437,6 @@ export function HeroSection() {
         <Card style={{ gridColumn: '3 / 4', gridRow: '1 / 2', display: 'flex', flexDirection: 'column' }}>
           <Label><GraduationCap size={15} /> Education</Label>
 
-          {/* High school row — with 100% Accepted stat inline */}
           <div style={{ display: 'flex', gap: 10, paddingBottom: 13, borderBottom: `1.5px solid ${theme.isDark ? 'rgba(249,248,243,0.07)' : 'rgba(0,0,0,0.07)'}`, marginBottom: 13, alignItems: 'center' }}>
             <div style={{ width: 46, height: 46, borderRadius: 10, flexShrink: 0, border: `2px solid ${theme.border}`, background: '#fff', overflow: 'hidden', padding: 3 }}>
               <img src={phanDinhPhungLogo} alt="Phan Dinh Phung HS" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
@@ -194,11 +446,9 @@ export function HeroSection() {
               <p style={{ fontSize: '0.68rem', color: theme.muted, marginBottom: 6 }}>High School · Ha Noi</p>
               <span style={{ padding: '2px 8px', background: 'rgba(34,197,94,0.12)', border: '1.5px solid #22C55E', borderRadius: 20, fontSize: '0.62rem', fontWeight: 700, color: '#16a34a' }}>✓ Graduated 2025</span>
             </div>
-            {/* 100% Accepted stat sits beside the high school */}
             <InlineStat value="100%" label="Accepted" />
           </div>
 
-          {/* University row — with GPA stat inline */}
           <div style={{ display: 'flex', gap: 10, marginBottom: 16, alignItems: 'center' }}>
             <div style={{ width: 46, height: 46, borderRadius: 10, flexShrink: 0, border: `2px solid ${theme.border}`, background: '#fff', overflow: 'hidden', padding: 3 }}>
               <img src={universityLogo} alt="PTIT University" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
@@ -217,11 +467,9 @@ export function HeroSection() {
                 ))}
               </div>
             </div>
-            {/* GPA stat sits beside the university */}
             <InlineStat value="3.4" label="GPA" accent />
           </div>
 
-          {/* Open to Internships — full width, prominent */}
           <div style={{
             marginTop: 'auto',
             display: 'flex', alignItems: 'center', gap: 10,
@@ -231,7 +479,7 @@ export function HeroSection() {
             boxShadow: `3px 3px 0 ${theme.text}`,
             borderRadius: 12, color: '#fff',
           }}>
-            <span style={{ width: 9, height: 9, borderRadius: '50%', background: '#fff', display: 'block', flexShrink: 0, animation: 'pulse-dot 1s infinite' }} />
+            <span style={{ width: 9, height: 9, borderRadius: '50%', background: '#22c55e', display: 'block', flexShrink: 0, animation: 'pulse-dot 1s infinite', boxShadow: '0 0 6px #22c55e' }} />
             <div>
               <div style={{ fontSize: '0.82rem', fontWeight: 800, letterSpacing: '0.02em' }}>Open to Internships & Collabs</div>
               <div style={{ fontSize: '0.66rem', opacity: 0.8, marginTop: 2 }}>Available from now · Hanoi or Remote</div>
@@ -239,35 +487,15 @@ export function HeroSection() {
           </div>
         </Card>
 
-        {/* ── 4. Skills card ── row 2, spans cols 1-2 */}
-        <Card style={{ gridColumn: '1 / 3', gridRow: '2 / 3' }}>
-          <Label><Code2 size={15} /> Tech Skills</Label>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '7px' }}>
-            {skills.map(s => (
-              <span key={s}
-                style={{ padding: '5px 12px', background: theme.isDark ? 'rgba(249,248,243,0.05)' : '#F9F8F3', border: `2px solid ${theme.border}`, borderRadius: 5, fontSize: '0.78rem', fontWeight: 600, fontFamily: "'JetBrains Mono', monospace", color: theme.text, cursor: 'default', transition: 'all 0.15s' }}
-                onMouseEnter={e => { const el = e.currentTarget; el.style.background = theme.text; el.style.color = theme.bg; el.style.boxShadow = `2px 2px 0 ${ACCENT}`; }}
-                onMouseLeave={e => { const el = e.currentTarget; el.style.background = theme.isDark ? 'rgba(249,248,243,0.05)' : '#F9F8F3'; el.style.color = theme.text; el.style.boxShadow = 'none'; }}>
-                {s}
-              </span>
-            ))}
-          </div>
+        {/* ── 4. Terminal Tech Skills ── row 2, spans cols 1-2 */}
+        <Card style={{ gridColumn: '1 / 3', gridRow: '2 / 3', padding: '22px 22px 18px' }}>
+          <Label><Terminal size={15} /> Tech Skills</Label>
+          <TerminalSkills />
         </Card>
 
-        {/* ── 5. Hobbies card ── row 2, col 3 */}
-        <Card style={{ gridColumn: '3 / 4', gridRow: '2 / 3' }}>
-          <Label>✨ Beyond Code</Label>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 7 }}>
-            {hobbies.map(({ icon, label }) => (
-              <div key={label}
-                style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 10px', background: theme.isDark ? 'rgba(249,248,243,0.05)' : '#F9F8F3', border: `2px solid ${theme.border}`, borderRadius: 8, fontSize: '0.78rem', fontWeight: 600, color: theme.text, cursor: 'default', transition: 'all 0.15s' }}
-                onMouseEnter={e => { const el = e.currentTarget; el.style.background = ACCENT; el.style.color = '#fff'; el.style.borderColor = ACCENT; el.style.boxShadow = `2px 2px 0 ${theme.text}`; el.style.transform = 'translate(-1px,-1px)'; }}
-                onMouseLeave={e => { const el = e.currentTarget; el.style.background = theme.isDark ? 'rgba(249,248,243,0.05)' : '#F9F8F3'; el.style.color = theme.text; el.style.borderColor = theme.border; el.style.boxShadow = 'none'; el.style.transform = 'none'; }}>
-                <span style={{ fontSize: '1rem' }}>{icon}</span>
-                <span>{label}</span>
-              </div>
-            ))}
-          </div>
+        {/* ── 5. iOS Smart Stack Gallery ── row 2, col 3 */}
+        <Card style={{ gridColumn: '3 / 4', gridRow: '2 / 3', display: 'flex', flexDirection: 'column', minHeight: 260, padding: '22px 22px 14px' }}>
+          <SmartStack />
         </Card>
 
         {/* ── 6. Contacts ── row 3, full width */}
@@ -282,6 +510,7 @@ export function HeroSection() {
 
       <style>{`
         @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.7)} }
+        @keyframes termLine { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:none} }
         @media(max-width:860px){
           #hero > div { grid-template-columns: 1fr !important; }
           #hero > div > * { grid-column: 1/2 !important; grid-row: auto !important; }

@@ -217,8 +217,8 @@ function update() {
 
   if (paddles.top.left)     paddles.top.angle    -= PADDLE_SPEED;
   if (paddles.top.right)    paddles.top.angle    += PADDLE_SPEED;
-  if (paddles.bottom.left)  paddles.bottom.angle += PADDLE_SPEED;
-  if (paddles.bottom.right) paddles.bottom.angle -= PADDLE_SPEED;
+  if (paddles.bottom.left)  paddles.bottom.angle -= PADDLE_SPEED;
+  if (paddles.bottom.right) paddles.bottom.angle += PADDLE_SPEED;
 
   paddles.top.angle    = normaliseAngle(paddles.top.angle);
   paddles.bottom.angle = normaliseAngle(paddles.bottom.angle);
