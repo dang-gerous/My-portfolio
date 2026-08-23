@@ -10,26 +10,26 @@ const ACCENT = '#C62828';
 // The folder: https://drive.google.com/drive/folders/19gG0-Fg-kzP4UAotKNx2C-VzFpuJ5VTN
 // Add your Drive file IDs below — each gives a direct image URL
 const GALLERY_IMAGES = [
-  { src: 'https://images.unsplash.com/photo-1625283518288-00362afc8663?w=600&q=80', caption: 'Good vibes only 🌟' },
-  { src: 'https://images.unsplash.com/photo-1781179752681-8b01a96702dc?w=600&q=80', caption: 'Hoops at midnight 🏀' },
-  { src: 'https://images.unsplash.com/photo-1511988617509-a57c8a288659?w=600&q=80', caption: 'Squad moments 🤝' },
-  { src: 'https://images.unsplash.com/photo-1582298538104-fe2e74c27f59?w=600&q=80', caption: 'Coffee & laughs ☕' },
-  { src: 'https://images.unsplash.com/photo-1536010305525-f7aa0834e2c7?w=600&q=80', caption: 'Exploring the city 🌆' },
+  { src: '../../imports/coffeejob.JPG', caption: 'my used-to-be sidequest ' },
+  { src: '../../imports/ball.png', caption: 'Hooping w my boi ' },
+  { src: '../../imports/food.png', caption: 'my fav food ' },
+  { src: '../../imports/grafiti.png', caption: 'fav pic' },
+  { src: '../../imports/cat.png', caption: 'my lazy cat' },
 ];
 
 const SKILL_CATEGORIES = [
   { prefix: 'frontend', color: '#22d3ee', skills: ['React', 'TypeScript', 'JavaScript', 'HTML/CSS'] },
   { prefix: 'design  ', color: '#a78bfa', skills: ['Figma', 'Framer'] },
-  { prefix: 'backend ', color: '#34d399', skills: ['Python', 'Node.js', 'REST APIs'] },
-  { prefix: 'systems ', color: '#fb923c', skills: ['C', 'C++', 'Linux'] },
-  { prefix: 'tools   ', color: '#f472b6', skills: ['Git', 'GitHub', 'Vibe Code'] },
+  { prefix: 'backend ', color: '#34d399', skills: ['Supabase', 'Node.js', 'REST APIs'] },
+  { prefix: 'systems ', color: '#fb923c', skills: ['C', 'C++', 'MacOS'] },
+  { prefix: 'tools   ', color: '#f472b6', skills: ['Git', 'GitHub',] },
 ];
 
 const contacts = [
   { label: 'GitHub', href: 'https://github.com/dang-gerous', icon: Github, handle: '@dang-gerous' },
   { label: 'LinkedIn', href: 'https://www.linkedin.com/in/phan-khanh-dang-54a7703a5/', icon: Linkedin, handle: 'Phan Khanh Dang' },
   { label: 'Facebook', href: 'https://www.facebook.com/phan.khanh.ang.101587/', icon: Facebook, handle: 'Phan Khánh Đăng' },
-  { label: 'Email', href: 'phankhanhdang07@gmail.com', icon: Mail, handle: 'phankhanhdang07@...' },
+  { label: 'Email', href: 'phankhanhdang2007@gmail.com', icon: Mail, handle: 'phankhanhdang07@...' },
 ];
 
 /* ── Atoms ─────────────────────────────────────────────────── */

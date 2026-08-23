@@ -60,7 +60,7 @@ export function WorkSection() {
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
               <img
-                src="https://drive.google.com/uc?export=view&id=1pors27F1PHFhl7SRKyf8nYgg9-LvFCjf"
+                src="../../imports/logostudymate.png"
                 alt="StudyMate logo"
                 style={{ width: 36, height: 36, objectFit: 'contain', borderRadius: 6, flexShrink: 0 }}
               />
@@ -75,7 +75,7 @@ export function WorkSection() {
               fontSize: '0.88rem', color: theme.muted, lineHeight: 1.6,
               maxWidth: '480px', transition: 'color 0.3s',
             }}>
-              A collaborative sanctuary where ambitious students find their perfect study partners and crush academic goals.
+              A collaborative sanctuary where students find their perfect study partners and crush academic goals.
             </p>
           </div>
 

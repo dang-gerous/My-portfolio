@@ -31,7 +31,7 @@ const NAV_LINKS = [
   { label: 'Game', id: 'game' },
 ];
 
-const QR_URL = 'https://drive.google.com/uc?export=view&id=1AANkUw9tMop--lJISNnIN4_VdpzMKqCs';
+const QR_URL = '../imports/qrbank.png';
 
 export function NavBar() {
   const { theme } = useTheme();
