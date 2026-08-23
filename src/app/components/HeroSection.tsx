@@ -10,11 +10,11 @@ const ACCENT = '#C62828';
 // The folder: https://drive.google.com/drive/folders/19gG0-Fg-kzP4UAotKNx2C-VzFpuJ5VTN
 // Add your Drive file IDs below — each gives a direct image URL
 const GALLERY_IMAGES = [
-  { src: '../../imports/coffeejob.JPG', caption: 'my used-to-be sidequest ' },
-  { src: '../../imports/ball.png', caption: 'Hooping w my boi ' },
-  { src: '../../imports/food.png', caption: 'my fav food ' },
-  { src: '../../imports/grafiti.png', caption: 'fav pic' },
-  { src: '../../imports/cat.png', caption: 'my lazy cat' },
+  { src: '/coffeejob.JPG', caption: 'my used-to-be sidequest' },
+  { src: '/ball.png', caption: 'Hooping w my boi' },
+  { src: '/food.png', caption: 'my fav food' },
+  { src: '/grafiti.png', caption: 'fav pic' },
+  { src: '/cat.png', caption: 'my lazy cat' },
 ];
 
 const SKILL_CATEGORIES = [

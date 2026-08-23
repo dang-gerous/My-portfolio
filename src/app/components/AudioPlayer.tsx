@@ -2,7 +2,7 @@ import { useRef, useState, useEffect } from 'react';
 import { useTheme } from '../context/ThemeContext';
 
 // Google Drive audio — direct streaming URL
-const AUDIO_SRC = '../imports/03. Wtf Bby I_m Lit.m4a';
+const AUDIO_SRC = '/03. Wtf Bby I_m Lit.m4a';
 
 export function AudioPlayer() {
   const { theme } = useTheme();

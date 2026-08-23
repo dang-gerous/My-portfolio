@@ -31,7 +31,7 @@ const NAV_LINKS = [
   { label: 'Game', id: 'game' },
 ];
 
-const QR_URL = '../imports/qrbank.png';
+const QR_URL = '/qrbank.png';
 
 export function NavBar() {
   const { theme } = useTheme();
@@ -344,7 +344,6 @@ function DonateBtn({ theme }: { theme: ReturnType<typeof useTheme>['theme'] }) {
               src={QR_URL}
               alt="Donation QR Code"
               style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-              onError={e => { (e.target as HTMLImageElement).src = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://www.buymeacoffee.com/'; }}
             />
           </div>
           <p style={{
