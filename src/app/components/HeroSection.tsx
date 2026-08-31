@@ -10,7 +10,7 @@ const GALLERY_IMAGES = [
   { src: '/coffeejob.JPG', caption: 'my used-to-be sidequest' },
   { src: '/ball.jpeg', caption: 'Hooping w my boi' },
   { src: '/food.jpeg', caption: 'my fav food' },
-  { src: '/grafiti.jpeg', caption: 'fav pic' },
+  { src: '/scene.JPG', caption: 'fav pic' },
   { src: '/cat.jpeg', caption: 'my lazy cat' },
 ];
 
@@ -26,7 +26,7 @@ const contacts = [
   { label: 'GitHub', href: 'https://github.com/dang-gerous', icon: Github, handle: '@dang-gerous' },
   { label: 'LinkedIn', href: 'https://www.linkedin.com/in/phan-khanh-dang-54a7703a5/', icon: Linkedin, handle: 'Phan Khanh Dang' },
   { label: 'Facebook', href: 'https://www.facebook.com/phan.khanh.ang.101587/', icon: Facebook, handle: 'Phan Khánh Đăng' },
-  { label: 'Email', href: 'phankhanhdang2007@gmail.com', icon: Mail, handle: 'phankhanhdang07@...' },
+  { label: 'Email', href: 'phankhanhdang2007@gmail.com', icon: Mail, handle: 'phankhanhdang2007@gmail.com' },
 ];
 
 /* ── Atoms ─────────────────────────────────────────────────── */
